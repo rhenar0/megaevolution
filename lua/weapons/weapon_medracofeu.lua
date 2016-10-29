@@ -47,7 +47,7 @@ timer.Create("ChangeMED", 2.5, 1, function()
   local rd = math.random(1,2)
   if rd == 1 then
     local modeldraco = "models/smashbros/lucario_player/lucario_player.mdl"
-  if rd == 2 then
+  elseif rd == 2 then
     local modeldraco = "models/lucian/pokemon/charizard_mega_x.mdl"
   else
     local modeldraco = "models/lucian/pokemon/charizard_mega_x.mdl"

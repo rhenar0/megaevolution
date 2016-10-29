@@ -22,17 +22,17 @@ function ENT:Use(activator)
   if (rd == 1) then
     activator:Give("weapon_melucario")
   elseif (rd == 2) then
-    activator:Give("weapon_mebrazegali")
+    activator:Give("weapon_melucario")
   elseif (rd == 3) then
-    activator:Give("weapon_meabsol")
+    activator:Give("weapon_melucario")
   elseif (rd == 4) then
-    activator:Give("weapon_memysidibule")
+    activator:Give("weapon_melucario")
   elseif (rd == 5) then
-    activator:Give("weapon_meabsol")
+    activator:Give("weapon_melucario")
   elseif (rd == 6) then
-    activator:Give("weapon_medracofeu")
+    activator:Give("weapon_melucario")
   else
-    activator:Give("weapon_mebrazegali")
+    activator:Give("weapon_melucario")
     activator:Give("weapon_melucario")
   end
 
