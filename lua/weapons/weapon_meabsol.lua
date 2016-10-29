@@ -1,4 +1,4 @@
-SWEP.PrintName = "Mega Evolution de Brazegali"
+SWEP.PrintName = "Mega Evolution de Absol"
 SWEP.Author = "Rhenar"
 SWEP.Category = "Mega Evolution"
 SWEP.Instructions = "Clique gauche pour Mega Evoluer"
@@ -34,7 +34,7 @@ function SWEP:PrimaryAttack()
   local ply = self.Owner
   ply:EmitSound("megaevolution/me.mp3")
 
-timer.Create("MEB", 0.5, 5, function()
+timer.Create("MEA", 0.5, 5, function()
   for i=1,50 do
 	local ply = self.Owner
 	ParticleEffect( "spectra_blast", ply:GetPos(), ply:GetAngles(), nil )
@@ -42,17 +42,17 @@ timer.Create("MEB", 0.5, 5, function()
   end
 end)
 
-timer.Create("ChangeMEB", 2.5, 1, function()
+timer.Create("ChangeMEA", 2.5, 1, function()
 	local ply = self.Owner
-	ply:SetModel("models/lucian/pokemon/blaziken_mega.mdl")
+	ply:SetModel("models/player_megaabsol.mdl")
   ply:SetHealth(4000)
   ply:SetArmor(500)
   ply:Give("sfw_phasma")
 end)
 
-timer.Create("StopMEB", 75, 1, function()
+timer.Create("StopMEA", 75, 1, function()
   local ply = self.Owner
-  ply:SetModel("models/player/pokemon/blazikenpm.mdl")
+  ply:SetModel("models/player_absol.mdl")
   ply:SetHealth(1200)
   ply:SetArmor(0)
   ply:StripWeapon("sfw_phasma")
