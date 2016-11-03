@@ -1,7 +1,7 @@
 SWEP.PrintName = "Mega Evolution de Dracaufeu"
 SWEP.Author = "Rhenar"
 SWEP.Category = "Mega Evolution"
-SWEP.Instructions = "Clique gauche pour Mega Evoluer"
+SWEP.Instructions = "Clique gauche pour Mega Evoluer pendant 75 secondes"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -34,6 +34,17 @@ function SWEP:PrimaryAttack()
   local ply = self.Owner
   ply:EmitSound("megaevolution/me.mp3")
 
+if SERVER then
+  local ply = self.Owner
+
+  net.Start("DracoTimerChangeMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
+
+  net.Start("DracoTimerStopMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
+
 timer.Create("MED", 0.5, 5, function()
   for i=1,50 do
 	local ply = self.Owner
@@ -42,36 +53,48 @@ timer.Create("MED", 0.5, 5, function()
   end
 end)
 
-timer.Create("ChangeMED", 2.5, 1, function()
-	local ply = self.Owner
+net.Receive("DracoTimerChangeMEAOK", function()
+  local ply = self.Owner
+  local plyveri = net.ReadEntity()
+
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
+
+  if (plysteam == plyveristeam) then
   local rd = math.random(1,2)
-  if rd == 1 then
-    local modeldraco = "models/smashbros/lucario_player/lucario_player.mdl"
-  elseif rd == 2 then
-    local modeldraco = "models/lucian/pokemon/charizard_mega_x.mdl"
+  if (rd == 1) then
+    plyveri:SetModel("models/lucian/pokemon/charizard_mega_y.mdl")
+  elseif (rd == 2) then
+    plyveri:SetModel("models/lucian/pokemon/charizard_mega_x.mdl")
   else
-    local modeldraco = "models/lucian/pokemon/charizard_mega_x.mdl"
+    plyveri:SetModel("models/lucian/pokemon/charizard_mega_x.mdl")
   end
-	ply:SetModel(modeldraco)
-  ply:SetHealth(4000)
-  ply:SetArmor(500)
-  ply:Give("sfw_phasma")
+  plyveri:SetHealth(4000)
+  plyveri:SetArmor(500)
+  plyveri:Give("sfw_phasma")
+  end
 end)
 
-timer.Create("StopMED", 75, 1, function()
+net.Receive("DracoTimerStopMEAOK",function()
   local ply = self.Owner
-  ply:SetModel("models/mikeyoshimodels/charizard_player.mdl")
-  ply:SetHealth(1200)
-  ply:SetArmor(0)
-  ply:StripWeapon("sfw_phasma")
-  ply:StripWeapon("weapon_medracofeu")
+  local plyveri = net.ReadEntity()
+
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
+
+  if (plysteam == plyveristeam) then
+  plyveri:SetModel("models/lucian/pokemon/charizard.mdl")
+  plyveri:SetHealth(1200)
+  plyveri:SetArmor(0)
+  plyveri:StripWeapon("sfw_phasma")
+  plyveri:StripWeapon("weapon_medracofeu")
 
   for i=1,5 do
-  ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
+  ParticleEffect( "spectra_tracer", plyveri:GetPos(), plyveri:GetAngles(), nil)
   end
-
+end
 end)
-
+end
 	local ply = self.Owner
 	ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
 

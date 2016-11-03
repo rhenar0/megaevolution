@@ -4,7 +4,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-    self:SetModel("models/props_c17/display_cooler01a.mdl")
+    self:SetModel("models/props_canal/rock_riverbed02b.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
@@ -26,7 +26,7 @@ function ENT:Use(activator)
   elseif (rd == 3) then
     activator:Give("weapon_meabsol")
   elseif (rd == 4) then
-    activator:Give("weapon_memysidibule")
+    activator:Give("weapon_memysdibule")
   elseif (rd == 5) then
     activator:Give("weapon_meabsol")
   elseif (rd == 6) then

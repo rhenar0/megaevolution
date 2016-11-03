@@ -1,7 +1,7 @@
 SWEP.PrintName = "Mega Evolution de Absol"
 SWEP.Author = "Rhenar"
 SWEP.Category = "Mega Evolution"
-SWEP.Instructions = "Clique gauche pour Mega Evoluer"
+SWEP.Instructions = "Clique gauche pour Mega Evoluer pendant 75 secondes"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -34,6 +34,18 @@ function SWEP:PrimaryAttack()
   local ply = self.Owner
   ply:EmitSound("megaevolution/me.mp3")
 
+if SERVER then
+
+  local ply = self.Owner
+
+  net.Start("AbsolTimerChangeMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
+
+  net.Start("AbsolTimerStopMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
+
 timer.Create("MEA", 0.5, 5, function()
   for i=1,50 do
 	local ply = self.Owner
@@ -42,31 +54,45 @@ timer.Create("MEA", 0.5, 5, function()
   end
 end)
 
-timer.Create("ChangeMEA", 2.5, 1, function()
-	local ply = self.Owner
-	ply:SetModel("models/player_megaabsol.mdl")
-  ply:SetHealth(4000)
-  ply:SetArmor(500)
-  ply:Give("sfw_phasma")
-end)
-
-timer.Create("StopMEA", 75, 1, function()
+net.Receive("AbsolTimerChangeMEAOK", function()
   local ply = self.Owner
-  ply:SetModel("models/player_absol.mdl")
-  ply:SetHealth(1200)
-  ply:SetArmor(0)
-  ply:StripWeapon("sfw_phasma")
-  ply:StripWeapon("weapon_mebrazegali")
+  local plyveri = net.ReadEntity()
 
-  for i=1,5 do
-  ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
+
+  if (plysteam == plyveristeam) then
+	  plyveri:SetModel("models/player_megaabsol.mdl")
+    plyveri:SetHealth(4000)
+    plyveri:SetArmor(500)
+    plyveri:Give("sfw_phasma")
   end
-
 end)
+
+net.Receive("AbsolTimerStopMEAOK",function()
+  local ply = self.Owner
+  local plyveri = net.ReadEntity()
+
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
+
+  if (plysteam == plyveristeam) then
+    plyveri:SetModel("models/player_absol.mdl")
+    plyveri:SetHealth(1200)
+    plyveri:SetArmor(0)
+    plyveri:StripWeapon("sfw_phasma")
+    plyveri:StripWeapon("weapon_mebrazegali")
+
+    for i=1,5 do
+      ParticleEffect( "spectra_tracer", plyveri:GetPos(), plyveri:GetAngles(), nil)
+    end
+  end
+end)
+
+end
 
 	local ply = self.Owner
 	ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
-
 
   self:SetNextPrimaryFire(CurTime()+120)
 

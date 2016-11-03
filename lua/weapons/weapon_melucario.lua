@@ -1,7 +1,7 @@
 SWEP.PrintName = "Mega Evolution de Lucario"
 SWEP.Author = "Rhenar"
 SWEP.Category = "Mega Evolution"
-SWEP.Instructions = "Clique gauche pour Mega Evoluer"
+SWEP.Instructions = "Clique gauche pour Mega Evoluer pendant 75 secondes"
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = false
@@ -23,50 +23,77 @@ SWEP.AutoSwitchFrom = false
 SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = false
 
-SWEP.ViewModel = "models/weapons/v_pistol.mdl"
-SWEP.WorldModel = "models/weapons/w_pistol.mdl"
+SWEP.WorldModel = ""
+
+SWEP.ViewModelFOV = 62
+SWEP.ViewModelFlip = false
+SWEP.AnimPrefix  = "rpg"
 
 function SWEP:PrimaryAttack()
 
+  local ply = self.Owner
+  ply:EmitSound("megaevolution/me.mp3")
 
-	  local ply = self.Owner
-	  ply:EmitSound("megaevolution/me.mp3")
+if SERVER then
 
-	timer.Create("MEL", 0.5, 5, function()
-	  for i=1,50 do
-		local ply = self.Owner
-		ParticleEffect( "spectra_blast", ply:GetPos(), ply:GetAngles(), nil )
-		ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
-	  end
-	end)
+  local ply = self.Owner
 
-	timer.Create("ChangeMEL", 2.5, 1, function()
-		local ply = self.Owner
-		ply:SetModel("models/player/pokemon/megalucario.mdl")
-	  ply:SetHealth(4000)
-	  ply:SetArmor(500)
-	  ply:Give("sfw_phasma")
-	end)
+  net.Start("LucarioTimerChangeMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
 
-	timer.Create("StopMEL", 75, 1, function()
-	  local ply = self.Owner
-	  ply:SetModel("models/smashbros/lucario_player/lucario_player.mdl")
-	  ply:SetHealth(1200)
-	  ply:SetArmor(0)
-	  ply:StripWeapon("sfw_phasma")
-	  ply:StripWeapon("weapon_melucario")
+  net.Start("LucarioTimerStopMEA")
+  net.WriteEntity(ply)
+  net.Send(ply)
 
-	  for i=1,5 do
-	  ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
-	  end
+timer.Create("MEL", 0.5, 5, function()
+  for i=1,50 do
+	local ply = self.Owner
+	ParticleEffect( "spectra_blast", ply:GetPos(), ply:GetAngles(), nil )
+	ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
+  end
+end)
 
-	end)
+net.Receive("LucarioTimerChangeMEAOK", function()
+  local ply = self.Owner
+  local plyveri = net.ReadEntity()
 
-		local ply = self.Owner
-		ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
 
+  if (plysteam == plyveristeam) then
+	  plyveri:SetModel("models/player/pokemon/megalucario.mdl")
+    plyveri:SetHealth(4000)
+    plyveri:SetArmor(500)
+    plyveri:Give("sfw_phasma")
+  end
+end)
 
-	  self:SetNextPrimaryFire(CurTime()+120)
+net.Receive("LucarioTimerStopMEAOK",function()
+  local ply = self.Owner
+  local plyveri = net.ReadEntity()
 
+  local plysteam = ply:SteamID64()
+  local plyveristeam = ply:SteamID64()
+
+  if (plysteam == plyveristeam) then
+    plyveri:SetModel("models/smashbros/lucario_player/lucario_player.mdl")
+    plyveri:SetHealth(1200)
+    plyveri:SetArmor(0)
+    plyveri:StripWeapon("sfw_phasma")
+    plyveri:StripWeapon("weapon_melucario")
+
+    for i=1,5 do
+      ParticleEffect( "spectra_tracer", plyveri:GetPos(), plyveri:GetAngles(), nil)
+    end
+  end
+end)
+
+end
+
+	local ply = self.Owner
+	ParticleEffect( "spectra_tracer", ply:GetPos(), ply:GetAngles(), nil)
+
+  self:SetNextPrimaryFire(CurTime()+120)
 
 end
