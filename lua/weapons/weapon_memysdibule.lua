@@ -63,7 +63,7 @@ net.Receive("MysdibuleTimerChangeMEAOK", function()
 
   if (plysteam == plyveristeam) then
 	  plyveri:SetModel("models/yunpolmodels/pokemon/gen 3/mega mawile.mdl")
-    plyveri:SetHealth(4000)
+    plyveri:SetHealth(4500)
     plyveri:SetArmor(500)
     plyveri:Give("sfw_phasma")
   end
@@ -78,7 +78,7 @@ net.Receive("MysdibuleTimerStopMEAOK",function()
 
   if (plysteam == plyveristeam) then
     plyveri:SetModel("models/yunpolmodels/pokemon/gen 3/mawile.mdl")
-    plyveri:SetHealth(1200)
+    plyveri:SetHealth(1500)
     plyveri:SetArmor(0)
     plyveri:StripWeapon("sfw_phasma")
     plyveri:StripWeapon("weapon_memysdibule")

@@ -69,7 +69,7 @@ net.Receive("DracoTimerChangeMEAOK", function()
   else
     plyveri:SetModel("models/lucian/pokemon/charizard_mega_x.mdl")
   end
-  plyveri:SetHealth(4000)
+  plyveri:SetHealth(7000)
   plyveri:SetArmor(500)
   plyveri:Give("sfw_phasma")
   end
@@ -84,7 +84,7 @@ net.Receive("DracoTimerStopMEAOK",function()
 
   if (plysteam == plyveristeam) then
   plyveri:SetModel("models/lucian/pokemon/charizard.mdl")
-  plyveri:SetHealth(1200)
+  plyveri:SetHealth(2500)
   plyveri:SetArmor(0)
   plyveri:StripWeapon("sfw_phasma")
   plyveri:StripWeapon("weapon_medracofeu")

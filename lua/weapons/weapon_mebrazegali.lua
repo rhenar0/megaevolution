@@ -63,8 +63,8 @@ net.Receive("BrazTimerChangeMEAOK", function()
 
   if (plysteam == plyveristeam) then
 	  plyveri:SetModel("models/lucian/pokemon/blaziken_mega.mdl")
-    plyveri:SetHealth(4000)
-    plyveri:SetArmor(500)
+    plyveri:SetHealth(6000)
+    plyveri:SetArmor(1000)
     plyveri:Give("sfw_phasma")
   end
 end)
@@ -78,7 +78,7 @@ net.Receive("BrazTimerStopMEAOK",function()
 
   if (plysteam == plyveristeam) then
     plyveri:SetModel("models/player/pokemon/blazikenpm.mdl")
-    plyveri:SetHealth(1200)
+    plyveri:SetHealth(3000)
     plyveri:SetArmor(0)
     plyveri:StripWeapon("sfw_phasma")
     plyveri:StripWeapon("weapon_mebrazegali")
